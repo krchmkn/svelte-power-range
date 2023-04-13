@@ -4,8 +4,6 @@
 	import debounce from 'lodash/debounce';
 
 	export let value = 0;
-	export let label = 'Power';
-
 	$: volume = value;
 	const markers = [0, 25, 50, 75, 100];
 
@@ -17,7 +15,7 @@
 
 <section in:fade class="range">
 	<label for="volume" class="range__label">
-		{label}: <span class="range__volume">{volume}%</span>
+		Мощность: <span class="range__volume">{volume}%</span>
 	</label>
 
 	<input
