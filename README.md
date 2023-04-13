@@ -1,6 +1,6 @@
 # svelte-power-range
 
-[Demo]()
+[Demo](https://svelte-power-range.netlify.app/)
 
 ## Specifications
 
