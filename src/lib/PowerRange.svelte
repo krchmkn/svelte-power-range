@@ -9,10 +9,6 @@
 	$: volume = value;
 	const markers = [0, 25, 50, 75, 100];
 
-	function handleInput({ target }: Event) {
-		volume = Number((target as HTMLInputElement)?.value);
-	}
-
 	const dispatch = createEventDispatcher<ComponentEvent>();
 	const handleChange = debounce(() => {
 		dispatch('change', { payload: volume });

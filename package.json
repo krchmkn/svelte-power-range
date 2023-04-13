@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-netlify": "^2.0.6",
 		"@sveltejs/kit": "^1.5.0",
 		"@types/lodash": "^4.14.192",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
@@ -35,6 +36,6 @@
 	"type": "module",
 	"dependencies": {
 		"lodash": "^4.17.21",
-		"u8-mqtt": "^0.3.2-0"
+		"mqtt": "^4.3.7"
 	}
 }

@@ -1,30 +1,38 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import PowerRange from '../lib/PowerRange.svelte';
-	import { onMount } from 'svelte';
-	import mqtt_client from 'u8-mqtt/esm/node/index.js';
+	import { onMount, onDestroy } from 'svelte';
+	import mqtt, { MqttClient } from 'mqtt/dist/mqtt';
 
 	const label = browser && /ru/.test(window.navigator.language) ? 'Мощность' : 'Power';
-	const my_mqtt = mqtt_client();
+
+	let client: MqttClient;
+	const brokerUrl = 'wss://test.mosquitto.org:8081';
+	const topic = 'svelte/power/range';
 
 	function onPowerChange({ detail }: CustomEvent<ComponentEvent>) {
-		my_mqtt.json_send('svelte/power/range', { value: detail.payload });
+		client && client.publish(topic, `${detail.payload}`);
 	}
 
 	$: value = 25;
 
 	onMount(async () => {
-		my_mqtt.with_websock('wss://test.mosquitto.org:8081').with_autoreconnect();
+		client = mqtt.connect(brokerUrl);
 
-		await my_mqtt.connect();
+		client.on('connect', function () {
+			client.subscribe(topic);
+		});
 
-		my_mqtt.subscribe_topic('svelte/power/range', (pkt: { json: () => { value: number } }) => {
-			const msg = pkt.json();
-
-			if (value != msg.value) {
-				value = msg.value;
+		client.on('message', function (_, message) {
+			const msg = Number(message.toString());
+			if (!isNaN(msg) && value !== msg) {
+				value = msg;
 			}
 		});
+	});
+
+	onDestroy(() => {
+		client && client.end();
 	});
 </script>
 
